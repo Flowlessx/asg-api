@@ -1,0 +1,174 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "ASG API",
+      "version": "1.0.0",
+      "title": "AirStar Group API Documentation",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "tags": [
+      {
+        "name": "ASG API",
+        "description": "ASG AUTH API"
+      }
+    ],
+    "servers": [
+      {
+        "url": "",
+        "description": "Main (production) server"
+      }
+    ],
+    "paths": {
+      "/qrcode": {
+        "get": {
+          "tags": [
+            "Add qr code to API"
+          ],
+          "summary": "Add qr code",  
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "404": {
+              "description": "NOT FOUND"
+            }
+          }
+        }
+      },
+      "/qrcodes": {
+        "get": {
+          "tags": [
+            "Get All qr codes from API"
+          ],
+          "summary": "Get All qr codes",
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "404": {
+              "description": "NOT FOUND"
+            }
+          }
+        }
+      },
+      "/qrcode/{uuid}": {
+        "get": {
+          "tags": [
+            "Get qrcodes from API"
+          ],
+          "summary": "Get qrcode info",
+          "parameters": [
+            {
+              "name": "uuid",
+              "in": "path",
+              "description": "qr code uuid to get",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "404": {
+              "description": "NOT FOUND"
+            }
+          }
+        }
+      },
+      "/qrcode/scanned/{uuid}": {
+        "put": {
+          "tags": [
+            "Update qrcodes on API"
+          ],
+          "summary": "scan qrcode",
+          "parameters": [
+            {
+              "name": "uuid",
+              "in": "path",
+              "description": "qr code scanned",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/uuid"
+              }
+            }
+          ],          
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "404": {
+              "description": "NOT FOUND"
+            }
+          }
+        }
+      },
+      "/qrcode/delete/{uuid}": {
+        "get": {
+          "tags": [
+            "Delete qr code to API"
+          ],
+          "parameters": [
+            {
+              "name": "uuid",
+              "in": "path",
+              "description": "qrcode uuid to delete",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/uuid"
+              }
+            }
+          ],
+          "summary": "Delete qr code",
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "404": {
+              "description": "NOT FOUND"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "qrcode": {
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "datetime": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "uuid": {
+          "type": "string",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "update": {
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "datetime": {
+              "type": "date-time"
+            }          
+          }
+        }
+      }
+    }
+  }

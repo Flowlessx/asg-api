@@ -1,0 +1,16 @@
+<!-- templates/example.html -->
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='example.css') }}">
+       
+    </head>
+    {% block content %}
+    <div class="container">
+        <h1>{{title}}</h1>
+        <h2>{{description}}</h2>
+    </div>
+    <div class="container" style="margin:auto;">
+        <p>{{json_qrcode}}<p>
+    </div>
+    {% endblock %}
+</html>

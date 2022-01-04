@@ -1,0 +1,28 @@
+<!-- templates/example.html -->
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='example.css') }}">
+    </head>
+    {% block content %}
+    <div class="container">
+        <h1>{{title}}</h1>
+        <h2>{{description}}</h2>
+    </div>
+    <div class="container" style="margin:auto;">
+        <table>
+            {% for qr_code in qr_codes %}
+            <tr>
+                <th>uuid: </th>
+                <td>{{ qr_code['uuid'] }}</td>
+                <th>creation_datetime: </th>
+                <td>{{ qr_code['creation_datetime'] }}</td>
+                <th>scanned :</th>
+                <td>{{ qr_code['scanned'] }}</td>
+            </tr>
+            {% endfor %}
+         </table>
+    </div>
+    {% endblock %}
+</html>
+
+

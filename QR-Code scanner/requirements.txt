@@ -1,0 +1,21 @@
+### virtual environment ####
+py -3 -m venv .venv
+.venv\scripts\activate
+
+# install kivy for basic styling
+pip install kivy
+
+# install kivymd for advanced styling
+pip install kivymd
+
+# install mysql connector
+
+pip install mysql.connector
+
+#install pythonping
+pip install pythonping
+
+##### START DEVELOPING #####
+
+
+https://kivy.org/doc/stable/guide/basic.html#quickstart

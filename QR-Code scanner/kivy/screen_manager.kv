@@ -1,0 +1,57 @@
+#:kivy 2.0
+
+#### import custom kivy files
+
+#:include kivy/login.kv
+#:include kivy/index.kv
+
+
+#### import hex colors
+
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+# ScreenManager Configuration    
+
+# Create navigation Drawer [Menu bar]
+<ContentNavigationDrawer>:
+    # Create a scrollview for all menu items 
+    ScrollView:
+        MDList:
+            # set menu items in list
+            OneLineListItem:
+                text: "Logout"
+                adaptive_height: True
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "login"
+            OneLineListItem:
+                text: "Index"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "index"
+       
+            
+#screenmanager
+MDScreen:
+
+    MDToolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        elevation: 10
+        title: "MDNavigationDrawer"
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+        title: "Airstar Group"
+        md_bg_color:  get_color_from_hex("#17182b")     
+    MDNavigationLayout:
+        x: toolbar.height
+        ScreenManager:
+            id: screen_manager
+            # add class to the screenmanager 
+            Login:
+            Index:
+           
+        MDNavigationDrawer:
+            id: nav_drawer
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
+

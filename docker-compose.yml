@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+# API
+ web:
+  image: api  
+  container_name: asg-api
+
+  build:
+    context: .
+    dockerfile: Dockerfile
+
+  networks:
+    backend:
+      ipv4_address: 172.16.100.100
+
+  ports:
+  - 8080:8080
+  
+  volumes: 
+  - ./:/app
+
+  depends_on:
+  - database
+ dashboard:
+  image: asg_dashboard  
+  container_name: asg-dashboard
+
+  build:
+    context: ./Dashboard
+    dockerfile: Dockerfile
+
+  networks:
+    backend:
+      ipv4_address: 172.16.100.150
+
+  ports:
+  - 8082:8082
+  
+  volumes: 
+  - ./:/dashboard
+
+  depends_on:
+  - web
+
+# DATABASE
+ database:
+  image: mysql:latest
+  container_name: database
+
+  restart: always
+
+  networks:
+    backend:
+      ipv4_address: 172.16.100.10
+
+  ports:
+  - 3306:3306 
+
+  volumes:
+  - mysql:/var/lib/mysql
+  
+  # Set mysql root password
+  environment:    
+     MYSQL_ROOT_PASSWORD: rootpass
+     MYSQL_DATABASE: asg
+   
+# DATABASE INTERFACE
+ phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: pma
+
+    restart: always
+
+    labels:
+      project: "phpmyadmin"
+      day: "28 december 2021"
+
+    networks:
+      backend:
+        ipv4_address: 172.16.100.20
+
+    ports:
+      - "8081:80"
+    # Set database host & credentials
+    environment:
+      PMA_HOST: database
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+
+    depends_on:
+    - database
+  
+# VOLUMES   
+volumes:
+  mysql:
+
+# NETWORKS 
+networks:
+  backend:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.100.0/24
+        

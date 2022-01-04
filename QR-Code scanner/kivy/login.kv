@@ -1,0 +1,110 @@
+#:kivy 2.0
+# Login Styling   
+<Login>:
+    name: "login"
+    login_button:login_button
+    # create grid 3 * 3
+    GridLayout:
+        rows:3
+        MDToolbar:
+            title: "Airstar Group"
+            md_bg_color: get_color_from_hex("#17182b")
+        # middle row [2]      
+        GridLayout:
+            cols:3 
+            padding: [dp(0),dp(200),dp(0),dp(0)]   
+            # left middle column [1]     
+            GridLayout:
+                cols:1   
+            # center column [1]                     
+            GridLayout:
+                cols:1
+                rows:4                  
+                row_force_default: True
+                row_default_height: '100dp'  
+                padding: [dp(150),dp(0),dp(150),dp(0)]
+                # center column [1] row [1]      
+                MDBoxLayout:
+                    adaptive_height: True
+                    padding: [dp(0),dp(0),dp(0),dp(0)]
+                    # Logo           
+                    Image:
+                        source:'media/ASG-Logo-2.png'
+                        size: self.width , self.height 
+                        allow_stretch: True
+                # center column [1] row [2]                    
+                MDBoxLayout:
+                    adaptive_height: True
+                    padding: [dp(0),dp(0),dp(0),dp(0)] 
+                    # Icon   
+                    MDIconButton:
+                        icon: 'account'
+                    # Username Input                    
+                    MDTextField:
+                        id:userfield
+                        halign: 'left'
+                        multiline: False            
+                        hint_text: "Username"
+                        helper_text: "Required"
+                        helper_text_mode: "on_focus"  
+                        pos_hint: {"center_y": .5}  
+                        write_tab: False  
+                        focus: False  
+                        on_text_validate: password.focus = True
+                        color: 1, 0, 0, 1
+                        text_color: 255,255,255, 1
+                # center column [1] row [3]                      
+                MDBoxLayout:
+                    adaptive_height: True
+                    padding: [dp(0),dp(0),dp(0),dp(0)]
+                    # Icon     
+                    MDIconButton:
+                        icon: 'lock'
+                    # Password Input  
+                    MDTextField:
+                        id:password
+                        halign:'left'
+                        multiline: False               
+                        password: True          
+                        hint_text: "Password"
+                        helper_text: "Required"
+                        helper_text_mode: "on_focus"  
+                        pos_hint: {"center_y": .5}
+                        write_tab: False      
+                        focus: False
+                        text_color: 255,255,255, 1         
+                        on_text_validate:
+                            login_button.background_normal = ''
+                            login_button.focus = True
+                # center column [1] row [4]              
+                MDBoxLayout:
+                    padding: [dp(50),dp(0),dp(0),dp(0)]
+                    # Login button              
+                    MDRectangleFlatIconButton:
+                        id:login_button                      
+                        icon: "login"
+                        text: "Login"   
+                        halign:'center'                
+                        elevation_normal: 12
+                        on_press : 
+                            root.login_process() #app.root.current = "workspace_GUI"
+                        focus: False     
+                        width:self.parent.width - dp(50)                
+                        # remove darker overlay of background colour
+                        background_normal : '' 
+            # right column [1] 
+            GridLayout:
+                cols:1
+                rows:4
+        # bottom row [3]              
+        GridLayout:
+            cols:3 
+            # left bottom column [1]     
+            GridLayout:
+                cols:1   
+            # center bottom column [1]                     
+            GridLayout:
+                cols:1    
+            # right bottom column [1]                     
+            GridLayout:
+                cols:1  
