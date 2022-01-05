@@ -1,21 +1,10 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask_swagger_ui import get_swaggerui_blueprint
-from flask import Flask, jsonify, request, make_response, render_template, send_file
-from flask_marshmallow import Marshmallow
-from marshmallow_sqlalchemy import auto_field
+from flask import Flask, jsonify, request, make_response, render_template, send_file, redirect, url_for
 
 import requests
 
-from sqlalchemy.sql.sqltypes import String
-from datetime import datetime
-from sqlalchemy import Column, Integer, ForeignKey
-from sqlalchemy.orm import relationship
-
 from flask_qrcode import QRcode as QRcode_generator
-import uuid
 import json
 import socket
-import os
 
 # instantiate flask object
 app = Flask(__name__)
@@ -47,7 +36,7 @@ def add_qrcode():
     try:
         
         # request a new qr code
-        response = requests.get('http://asg-api:8080/qrcode')
+        response = requests.get('http://asg-api:8085/qrcode')
 
         # serialize incoming response
         serialized_qrcode = json.loads(response.text)
@@ -78,7 +67,7 @@ def get_qrcodes():
     try:
         
         # request a new qr code
-        response = requests.get('http://asg-api:8080/qrcodes')
+        response = requests.get('http://asg-api:8085/qrcodes')
 
         # serialize incoming response
         serialized_qr_codes = json.loads(response.text)
@@ -107,7 +96,7 @@ def get_qrcode(qr_uuid):
     '''
     try:
        # request a new qr code
-        response = requests.get('http://asg-api:8080/qrcode/' + qr_uuid)
+        response = requests.get('http://asg-api:8085/qrcode/' + qr_uuid)
 
         # serialize incoming response
         serialized_qr_code = json.loads(response.text)
@@ -137,7 +126,7 @@ def scanned_qrcode(qr_uuid):
     if request.method == 'PUT':
        
         # update a qr code
-        response = requests.put('http://asg-api:8080/qrcode/' + str(qr_uuid))
+        response = requests.put('http://asg-api:8085/qrcode/' + str(qr_uuid))
 
         # serialize incoming response
         serialized_new_qrcode = json.loads(response.text)
@@ -161,7 +150,7 @@ def delete_qrcode(qr_uuid):
     if request.method == 'DELETE':
        
         #delete a qr code
-        response = requests.delete('http://asg-api:8080/qrcode/' + str(qr_uuid))
+        response = requests.delete('http://asg-api:8085/qrcode/' + str(qr_uuid))
 
         # serialize incoming response
         serialized_new_qrcode = json.loads(response.text)
@@ -173,6 +162,47 @@ def delete_qrcode(qr_uuid):
             description="Generate QR code with unique uuid",
             json_qrcode=serialized_new_qrcode
         )
+
+# get a specific qrcode
+@app.route("/login", methods=["GET, POST"])
+def get_qrcode(user_uuid):
+    '''
+    Show QR code info with QR code uuid
+
+    Input : QR code uuid
+    Ouput : QR code JSON object with corresponding uuid
+    '''
+    try:
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            # request a new qr code
+            response = requests.post('http://asg-api:8085/login/', username=username, password=password)
+            # check if response for user login is true
+            if response.Text == True:
+                # set session
+                # return template
+                return redirect(url_for("user", user=username))
+            else:
+                # return template
+                return render_template(
+                'login.html',
+                username=username
+                )
+
+        elif request.method == 'GET':           
+            # return template
+            return render_template(
+                'login.html',
+                username=""
+            )
+
+    except Exception as e:
+        return jsonify({"Error": "Invalid Request, please try again." + str(e)})
+
+@app.route("/<user_id>")
+def user(user_id):
+    return f"<h1>{user_id}</h1>"
 
 # error handeling
 @app.errorhandler(400)

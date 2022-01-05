@@ -19,4 +19,4 @@ EXPOSE 8080
 # use pip to install requirments library
 RUN pip install -r requirements.txt
 # run flask and set hostname and port for flask app
-CMD ["flask", "run", "-h", "0.0.0.0", "-p", "8080"]
+CMD ["flask", "run", "-h", "0.0.0.0", "-p", "8085"]

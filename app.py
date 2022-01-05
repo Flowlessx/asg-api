@@ -248,7 +248,7 @@ def scanned_qrcode(qr_uuid):
             return jsonify({"Error": str(e)})
 
         # request a new qr code
-        response = request.get('http://localhost:8080/qrcode')
+        response = request.get('http://localhost:8085/qrcode')
 
         # serialize incoming response
         serialized_new_qrcode = json.loads(response.text)
@@ -269,6 +269,29 @@ def delete_qrcode(qr_uuid):
     db.session.delete(qrcode)
     db.session.commit()
     return jsonify({"Success": "qrcode deleted."})
+
+# get a specific qrcode
+@app.route("/login", methods=["POST"])
+def get_qrcode():
+    '''
+    Show QR code info with QR code uuid
+
+    Input : QR code uuid
+    Ouput : QR code JSON object with corresponding uuid
+    '''
+    try:
+        if request.method == 'POST':              
+            # get json object and force it to be json          
+            json_user_object = request.get_json(force=True)  
+            print(json_user_object)  
+            test = jsonify(True)             
+            # return template
+            return test
+
+    except Exception as e:
+        return jsonify({"Error": "Invalid Request, please try again." + str(e)})
+
+
 
 
 # error handeling

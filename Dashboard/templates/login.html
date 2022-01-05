@@ -1,0 +1,15 @@
+<!-- templates/example.html -->
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='example.css') }}">
+       
+    </head>
+    {% block content %}
+    <form action="#" method="post">
+        <p>Name:</p>
+        <p><input type="text" name="username" />{{username}}</p>
+        <p><input type="password" name="password" /></p>
+        <p><input type="submit" value="submit"/></p>
+    </form>
+    {% endblock %}
+</html>
